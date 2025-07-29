@@ -1,5 +1,8 @@
 import chalk from 'chalk';
 import mostrarMenu from './helpers/menu.js';
+import { Client } from './models/Cliente.js';
+import { ClienteServiceCrear } from './services/serviceCliente.js';
+import Worker from 'worker_threads'
 
 async function main() {
   let salir = false;
@@ -8,9 +11,13 @@ async function main() {
     const opcion = await mostrarMenu();
 
     switch (opcion) {
+
+
       case '1':
-        console.log("caso 1");
-        break;
+        const nuevoCliente = new ClienteServiceCrear()
+        await nuevoCliente.crearCliente()
+        break
+
       case '2':
         console.log("caso 2");
         break;

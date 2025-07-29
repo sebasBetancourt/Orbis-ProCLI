@@ -21,6 +21,7 @@
   "dependencies": {
     "chalk": "^5.4.1",
     "inquirer": "^12.8.2",
+    "mongodb": "^6.18.0",
     "mongoose": "^8.16.5"
   }
 }
