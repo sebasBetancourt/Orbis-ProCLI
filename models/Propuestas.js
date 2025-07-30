@@ -1,19 +1,20 @@
 import { connection } from "../config/db.js";
 
 export class Propuesta {
-    constructor(id, nombre, descripcion, precio, plazos, estados){
-      this.id = id;
-      this.nombre = nombre;
+    constructor( clienteId, descripcion, precio, plazoDias, estado ){
+      this.clienteId = clienteId;
       this.descripcion = descripcion;
       this.precio = precio;
-      this.plazos = plazos;
-      this.estados = estados;
+      this.plazoDias = plazoDias;
+      this.estado = estado;
     }
   
-    generarProyecto(){
-        if(estados === "aceptada"){
-            throw new Error("Aqui nose puede");
-        }
+    mostrarPropuesta(){
+      console.log(`Descripcion: ${this.descripcion}, Precio: ${this.precio}, Plazo en dias: ${this.plazoDias}, Estado: ${this.estado} `);
     }
   }
   
+  export async function propuestaModel(){
+    const db = await connection();
+    return db.collection('propuestas')
+}

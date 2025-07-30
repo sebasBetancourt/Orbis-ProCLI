@@ -6,9 +6,9 @@ import { seleccionarClientePaginado } from "../utils/seleccionCliente.js";
 
 export class ClienteService {
   async crearCliente() {
-    const { nombreCliente, emailCliente, telefonoCliente } = await datosCliente();
+    const { nombreCliente, emailCliente, telefonoCliente, empresaCliente } = await datosCliente();
     const ClienteModel = await clienteModel();
-    const cliente = new Client(nombreCliente, emailCliente, telefonoCliente);
+    const cliente = new Client(nombreCliente, emailCliente, telefonoCliente, empresaCliente);
     await ClienteModel.insertOne(cliente);
     console.log(cliente.mostrarCliente());
     console.log(chalk.green("Cliente Agregado Exitosamente✅"));
@@ -33,7 +33,7 @@ export class ClienteService {
     console.log(`${chalk.bold("Nombre:")} ${clienteSeleccionado.nombre}`);
     console.log(`${chalk.bold("Email:")} ${clienteSeleccionado.email}`);
     console.log(`${chalk.bold("Teléfono:")} ${clienteSeleccionado.telefono}`);
-    console.log(`${chalk.bold("ID:")} ${clienteSeleccionado._id}`);
+    console.log(`${chalk.bold("Empresa Asociada:")} ${clienteSeleccionado.empresaCliente}`);
 
     await inquirer.prompt([
       {
@@ -53,10 +53,10 @@ export class ClienteService {
       return;
     }
 
-    const { nombreCliente, emailCliente, telefonoCliente } = await datosCliente();
+    const { nombreCliente, emailCliente, telefonoCliente, empresaCliente } = await datosCliente();
     await ClienteModel.updateOne(
       { _id: clienteSeleccionado._id },
-      { $set: { nombre: nombreCliente, email: emailCliente, telefono: telefonoCliente } }
+      { $set: { nombre: nombreCliente, email: emailCliente, telefono: telefonoCliente, empresaCliente } }
     );
 
     console.log(chalk.green("Cliente Actualizado exitosamente✅"));

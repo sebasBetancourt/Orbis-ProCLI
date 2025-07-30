@@ -60,5 +60,24 @@ export async function datosCliente() {
     ]);
 
 
-    return { nombreCliente, emailCliente, telefonoCliente }
+    const { empresaCliente } = await inquirer.prompt([
+      {
+          type: 'input',
+          name: 'empresaCliente',
+          message: 'Ingresa la empresa del Cliente🏢: ',
+          validate: input => {
+              const regex = /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/;
+
+            if (!input.trim()){
+              return chalk.red.bold('El campo empresa no puede estar vacio');
+            } else if (!regex.test(input)){
+              return chalk.red.bold('El campo empresa debe ser valido');
+            }
+            return true; 
+          }
+      }
+  ]);
+
+
+    return { nombreCliente, emailCliente, telefonoCliente, empresaCliente }
 }
