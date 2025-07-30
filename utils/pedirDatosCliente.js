@@ -11,8 +11,8 @@ export async function datosCliente() {
           validate: input => {
               const regex = /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/;
         
-              if (!input.trim()) {
-                return chalk.red.bold('El nombre no puede estar vacío');
+              if (!input.trim() && !input.trim() === null)  {
+                return chalk.red.bold('El nombre no puede estar vacío y tampoco puede ser null');
               } else if (!regex.test(input)) {
                 return chalk.red.bold('El nombre solo puede contener letras y espacios');
               }

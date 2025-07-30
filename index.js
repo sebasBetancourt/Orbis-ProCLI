@@ -1,8 +1,6 @@
 import chalk from 'chalk';
 import mostrarMenu from './helpers/menu.js';
-import { Client } from './models/Cliente.js';
-import { ClienteService } from './services/serviceCliente.js';
-import Worker from 'worker_threads'
+import { adminCliente } from './controllers/controllerCliente.js';
 
 async function main() {
   let salir = false;
@@ -14,9 +12,7 @@ async function main() {
 
 
       case '1':
-        const nuevoCliente = new ClienteService();
-        await nuevoCliente.crearCliente();
-        await nuevoCliente.listarCliente();
+        await adminCliente()
         break
 
       case '2':

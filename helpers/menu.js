@@ -1,5 +1,5 @@
 import inquirer from 'inquirer';
-import { mensageMenu } from '../utils/utils.js';
+import { mensageMenu } from '../utils/messageMenu.js';
 
 export default async function mostrarMenu() {
   const { opcion } = await inquirer.prompt([
