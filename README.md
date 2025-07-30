@@ -61,3 +61,10 @@ Transacciones para registrar pagos, evitar duplicidad o pérdidas de consistenci
 - El repositorio debe estar bien estructurado en carpetas como /models, /services, /commands, /config, /utils.
 - Uso obligatorio de .gitignore, README.md completo y commits con formato Conventional Commits (feat:, fix:, docs:, etc.).
 - Debe evidenciar colaboración organizada si es un equipo (1 a 3 integrantes).
+
+## Configurar *dontenv* .env para Base de Datos MongoDB
+- Configura tu MongoAtlas con pegando esto (Primero crea un archivo **.env**):
+  ```
+  MONGODB_URI=mongodb+srv://miUsuario:miContraseña@cluster0.abc123.mongodb.net/portafolio-freelancer?retryWrites=true&w=majority
+  DB_NAME=portafolio-freelancer
+  ```

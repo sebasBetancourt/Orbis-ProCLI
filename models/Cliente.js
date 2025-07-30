@@ -2,13 +2,18 @@ import { connection } from "../config/db.js";
 
 export class Client {
     constructor(nombre, email, telefono){
+      if (!nombre || !email || !telefono) {
+        throw new Error('Todos los campos son obligatorios.');
+      }
       this.nombre = nombre;
       this.email = email;
       this.telefono = telefono;
-    }
+    };
+
     mostrarCliente(){
-      console.log(`Nuevo Cliente⚠️: Nombre: ${this.nombre}, Email: ${this.email}, Telefono: ${this.telefono}`);
+      return `Nombre: ${this.nombre}, Email: ${this.email}, Telefono: ${this.telefono}`
     }
+
   }
   
 

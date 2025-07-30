@@ -1,22 +1,30 @@
+import { MongoClient } from 'mongodb';
+import dotenv from 'dotenv';
 
-import {MongoClient} from 'mongodb';
+dotenv.config();
 
+const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017/';
+const nombreDB = process.env.DB_NAME || 'portafolio-freelancer';
 
-const uri = "mongodb://localhost:27017/";
-const nombreDB = "portafolio-freelancer";
 const cliente = new MongoClient(uri);
 
-
 export async function connection() {
-    await cliente.connect();
-    console.log("Se ha establecido la conexion MongoDB✅\n"); 
-    return cliente.db(nombreDB);
+    try {
+        await cliente.connect();
+        console.log("Se ha establecido la conexión con MongoDB✅\n");
+        return cliente.db(nombreDB);
+    } catch (error) {
+        throw new Error("Error: ", error);
+    }
 }
 
-export async function closeConection() {
-    if (cliente){
-        await cliente.close()
-        console.log("Se ha cerrado la conexion MongoDB❌");
+export async function closeConnection() {
+    if (cliente) {
+        try {
+            await cliente.close();
+            console.log("Se ha cerrado la conexión con MongoDB❌");
+        } catch (error) {
+            throw new Error("Error: ", error);
+        }
     }
-    
 }
