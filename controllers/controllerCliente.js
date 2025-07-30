@@ -12,16 +12,20 @@ export async function adminCliente() {
 
 
       case '1':
+        console.clear();
         await nuevoCliente.crearCliente();
         break
 
       case '2':
+        console.clear()
         await nuevoCliente.listarCliente();
         break;
       case '3':
+        console.clear()
         await nuevoCliente.actualizarCliente();
         break;
       case '4':
+        console.clear()
         await nuevoCliente.eliminarCliente();
         break;
       case '0':

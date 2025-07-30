@@ -1,5 +1,6 @@
 import chalk from 'chalk';
 export function mensageMenu() {
+    console.clear()
     console.log(chalk.magenta("*******************************************"));
     console.log(chalk.magenta("*******************************************"));
     console.log(chalk.magenta("**                                       **"));

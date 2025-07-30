@@ -9,7 +9,7 @@ const cliente = new MongoClient(uri);
 
 export async function connection() {
     await cliente.connect();
-    console.log("Se ha establecido la conexion MongoDB✅"); 
+    console.log("Se ha establecido la conexion MongoDB✅\n"); 
     return cliente.db(nombreDB);
 }
 
