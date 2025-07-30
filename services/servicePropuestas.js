@@ -3,7 +3,7 @@ import { ListarClienteComando } from "../commands/ListarClienteComando.js";
 import { ActualizarClienteComando } from "../commands/ActualizarClienteComando.js";
 import { EliminarClienteComando } from "../commands/EliminarClienteComando.js";
 
-export class ClienteService {
+export class PropuestaService {
   async crearCliente() {
     const comando = new CrearClienteComando();
     await comando.ejecutar()

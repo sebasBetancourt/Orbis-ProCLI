@@ -1,13 +1,13 @@
-import {mostrarMenuCliente} from '../helpers/menuCliente.js';
 import chalk from 'chalk';
-import { ClienteService } from '../services/serviceCliente.js';
+import { PropuestaService } from '../services/servicePropuestas.js';
+import {mostrarMenuPropuesta} from '../helpers/menuPropuesta.js';
 
 export async function adminCliente() {
   let salir = false;
 
   while (!salir) {
-    const opcion = await mostrarMenuCliente();
-    const nuevoCliente = new ClienteService();
+    const opcion = await mostrarMenuPropuesta();
+    const nuevoCliente = new PropuestaService();
     switch (opcion) {
 
 
