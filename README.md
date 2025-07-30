@@ -68,3 +68,8 @@ Transacciones para registrar pagos, evitar duplicidad o pérdidas de consistenci
   MONGODB_URI=mongodb+srv://miUsuario:miContraseña@cluster0.abc123.mongodb.net/portafolio-freelancer?retryWrites=true&w=majority
   DB_NAME=portafolio-freelancer
   ```
+
+## Principios S.O.L.I.D
+1. Cliente.js y ServiceCLiente
+- (SRP) La utilizo con la clase class "mostrarCliente" separado en respossabilidad Unica imprimir los datos del cliente.
+- (OCP) Principio de Abierto/Cerrado esto hace que crea un servicio "ServiceCLiente" en el que separa por comandos las funciones de /commands/client en el que sePARA CON RESPONASBAILIDADES UNICAS , en el que estan abiertas para su extension y cerradas para su modificacion con command.js "ejecutar()"

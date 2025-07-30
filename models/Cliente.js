@@ -11,12 +11,16 @@ export class Client {
       this.empresa = empresa;
     };
 
-    mostrarCliente(){
-      return `Nombre: ${this.nombre}, Email: ${this.email}, Telefono: ${this.telefono}, Empresa: ${this.empresa}`
-    }
 
   }
   
+
+export class mostrarCliente{
+  mostrar(Cliente){
+    console.log(`Nombre: ${Cliente.nombre}, Email: ${Cliente.email}, Telefono: ${Cliente.telefono}, Empresa: ${Cliente.empresa}`);
+    
+  }
+}
 
 
 export async function clienteModel(){
