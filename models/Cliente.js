@@ -15,6 +15,7 @@ export class Client {
   }
   
 
+
 export class mostrarCliente{
   mostrar(Cliente){
     console.log(`Nombre: ${Cliente.nombre}, Email: ${Cliente.email}, Telefono: ${Cliente.telefono}, Empresa: ${Cliente.empresa}`);

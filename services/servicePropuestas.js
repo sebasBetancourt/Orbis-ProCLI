@@ -1,42 +1,26 @@
-import chalk from 'chalk';
-import { PropuestaFactory } from '../models/Propuestas.js';
-import { pedirDatosPropuesta } from '../utils/pedirDatosPropuesta.js';
+import { CrearPropuestaComando } from '../commands/commandsPropuesta/CrearPropuestaComando.js';
+import { ListarPropuestaComando } from '../commands/commandsPropuesta/ListarPropuestaComando.js';
+import { ActualizarPropuestaComando } from '../commands/commandsPropuesta/ActualizarPropuestaComando.js';
+import { EliminarPropuestaComando } from '../commands/commandsPropuesta/EliminarPropuestaComando.js';
 
-// Responsabilidad: Lógica de negocio para propuestas (SRP)
-// DIP: Depende de la abstracción Repositorio, no de la implementación concreta
 export class PropuestaService {
-  constructor(repositorio, proyectoService) {
-    this.repositorio = repositorio; // Inyección de dependencia (DIP)
-    this.proyectoService = proyectoService; // Para generar proyectos automáticamente
-  }
-
   async crearPropuesta() {
-    // Lógica para recolectar datos y crear propuesta (implementada por ti)
-    console.log(chalk.blue('Creando nueva propuesta...'));
-    // Ejemplo: const datos = await pedirDatosPropuesta();
-    // const propuesta = PropuestaFactory.crearPropuesta(datos);
-    // await this.repositorio.insertarPropuesta(propuesta);
+    const comando = new CrearPropuestaComando();
+    await comando.ejecutar();
   }
 
   async listarPropuestas() {
-    // Lógica para listar propuestas (implementada por ti)
-    console.log(chalk.yellow.bold('Lista de Propuestas:'));
-    // Ejemplo: const propuestas = await this.repositorio.obtenerPropuestas();
+    const comando = new ListarPropuestaComando();
+    await comando.ejecutar();
   }
 
-  async actualizarEstadoPropuesta(propuestaId, nuevoEstado) {
-    // Lógica para actualizar estado (implementada por ti)
-    console.log(chalk.blue('Actualizando estado de propuesta...'));
-    // Si el estado es 'aceptada', generar proyecto
-    if (nuevoEstado === 'aceptada') {
-      // const propuesta = await this.repositorio.obtenerPropuestaPorId(propuestaId);
-      // await PropuestaFactory.crearProyectoDesdePropuesta(propuesta, this.proyectoService);
-    }
+  async actualizarPropuesta() {
+    const comando = new ActualizarPropuestaComando();
+    await comando.ejecutar();
   }
 
-  async eliminarPropuesta(propuestaId) {
-    // Lógica para eliminar propuesta (implementada por ti)
-    console.log(chalk.blue('Eliminando propuesta...'));
-    // Ejemplo: await this.repositorio.eliminarPropuesta(propuestaId);
+  async eliminarPropuesta() {
+    const comando = new EliminarPropuestaComando();
+    await comando.ejecutar();
   }
 }
