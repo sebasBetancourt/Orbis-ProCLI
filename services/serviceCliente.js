@@ -1,7 +1,7 @@
-import { CrearClienteComando } from "../commands/CrearClienteComando.js";
-import { ListarClienteComando } from "../commands/ListarClienteComando.js";
-import { ActualizarClienteComando } from "../commands/ActualizarClienteComando.js";
-import { EliminarClienteComando } from "../commands/EliminarClienteComando.js";
+import { CrearClienteComando } from "../commands/commandsClient/CrearClienteComando.js";
+import { ListarClienteComando } from "../commands/commandsClient/ListarClienteComando.js";
+import { ActualizarClienteComando } from "../commands/commandsClient/ActualizarClienteComando.js";
+import { EliminarClienteComando } from "../commands/commandsClient/EliminarClienteComando.js";
 
 export class ClienteService {
   async crearCliente() {

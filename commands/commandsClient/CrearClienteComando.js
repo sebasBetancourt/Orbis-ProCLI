@@ -1,6 +1,6 @@
 import { Comando } from "./Comando.js";
-import { Client, clienteModel, mostrarCliente } from "../models/Cliente.js";
-import { datosCliente } from "../utils/pedirDatosCliente.js";
+import { Client, clienteModel, mostrarCliente  } from "../../models/Cliente.js";
+import { datosCliente } from "../../utils/pedirDatosCliente.js";
 import chalk from "chalk";
 import inquirer from "inquirer";
 

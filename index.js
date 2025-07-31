@@ -1,6 +1,7 @@
 import chalk from 'chalk';
 import mostrarMenu from './helpers/menu.js';
 import { adminCliente } from './controllers/controllerCliente.js';
+import { adminPropuesta } from './controllers/controllerPropuesta.js';
 
 async function main() {
   let salir = false;
@@ -12,11 +13,11 @@ async function main() {
 
 
       case '1':
-        await adminCliente()
-        break
+        await adminCliente();
+        break;
 
       case '2':
-        console.log("caso 2");
+        await adminPropuesta();
         break;
       case '3':
         console.log("caso 3");

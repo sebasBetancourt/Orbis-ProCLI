@@ -1,6 +1,6 @@
 import { Comando } from "./Comando.js";
-import { clienteModel } from "../models/Cliente.js";
-import { seleccionarClientePaginado } from "../utils/seleccionCliente.js";
+import { clienteModel } from "../../models/Cliente.js";
+import { seleccionarClientePaginado } from "../../utils/seleccionCliente.js";
 import chalk from "chalk";
 import inquirer from "inquirer";
 

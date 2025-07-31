@@ -1,7 +1,7 @@
 import inquirer from 'inquirer';
 import chalk from 'chalk';
 
-export default async function mostrarMenuPropuesta() {
+export async function mostrarMenuPropuesta() {
   const { opcion } = await inquirer.prompt([
     {
       type: 'list',

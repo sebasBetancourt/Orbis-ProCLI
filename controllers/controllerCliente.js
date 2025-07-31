@@ -1,4 +1,4 @@
-import {mostrarMenuCliente} from '../helpers/menuCliente.js';
+import {mostrarMenuCliente} from '../helpers/menuCliente.js'
 import chalk from 'chalk';
 import { ClienteService } from '../services/serviceCliente.js';
 
