@@ -10,13 +10,16 @@ export class PropuestaService {
       await comando.ejecutar();
     } catch (error) {
       console.error(error);
-      
     }
   };
 
   async listarPropuestas() {
-    const comando = new ListarPropuestaComando();
-    await comando.ejecutar();
+    try {
+      const comando = new ListarPropuestaComando();
+      await comando.ejecutar();
+    } catch (error) {
+      console.error("Error al Ejecutar Comando Listar");
+    }
   };
 
   async actualizarPropuesta() {
@@ -25,7 +28,11 @@ export class PropuestaService {
   };
 
   async eliminarPropuesta() {
-    const comando = new EliminarPropuestaComando();
-    await comando.ejecutar();
+    try {
+      const comando = new EliminarPropuestaComando();
+      await comando.ejecutar();
+    } catch (error) {
+      console.error("Error al Ejecutar Comando Eliminar");
+    }
   };
 }

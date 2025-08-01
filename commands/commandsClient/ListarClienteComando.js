@@ -10,7 +10,7 @@ export class ListarClienteComando extends Comando{
         const clienteSeleccionado = await seleccionarClientePaginado(ClienteModel, 'Selecciona un cliente para ver más detalles:');
         
         if (!clienteSeleccionado) {
-          return;
+          return chalk.red.bold('Seleccion Invalida');
         }
 
         console.log(chalk.green.bold("\nDetalles del Cliente:\n"));
