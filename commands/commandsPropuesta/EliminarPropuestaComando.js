@@ -1,5 +1,5 @@
 import { Comando } from './Comando.js';
-import { Propuesta, MostrarPropuesta, propuestaModel } from '../../models/Propuestas.js';
+import { Propuesta, propuestaModel } from '../../models/Propuestas.js';
 import chalk from 'chalk';
 import inquirer from 'inquirer';
 

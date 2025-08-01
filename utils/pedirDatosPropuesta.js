@@ -1,6 +1,6 @@
 import inquirer from 'inquirer';
 import chalk from 'chalk';
-import { seleccionarClientePaginado } from '../helpers/seleccionarClientePaginado.js';
+import { seleccionarClientePaginado } from '../utils/seleccionCliente.js'
 
 export async function pedirDatosPropuesta(clienteModel) {
   console.log(chalk.blue('Ingresando datos de la propuesta...'));
@@ -11,7 +11,7 @@ export async function pedirDatosPropuesta(clienteModel) {
     return null;
   }
 
-  const clienteId = clienteSeleccionado._id.toString();
+  const clienteId = clienteSeleccionado._id;
   const clienteNombre = clienteSeleccionado.nombre;
 
   const { descripcion, precio, plazo } = await inquirer.prompt([
@@ -46,11 +46,5 @@ export async function pedirDatosPropuesta(clienteModel) {
     },
   ]);
 
-  return {
-    clienteId,
-    descripcion,
-    precio: parseFloat(precio),
-    plazo: parseInt(plazo),
-    clienteNombre,
-  };
+  return { clienteId, descripcion, precio: parseFloat(precio), plazo: parseInt(plazo), clienteNombre,};
 }

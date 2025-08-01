@@ -5,22 +5,27 @@ import { EliminarPropuestaComando } from '../commands/commandsPropuesta/Eliminar
 
 export class PropuestaService {
   async crearPropuesta() {
-    const comando = new CrearPropuestaComando();
-    await comando.ejecutar();
-  }
+    try {
+      const comando = new CrearPropuestaComando();
+      await comando.ejecutar();
+    } catch (error) {
+      console.error(error);
+      
+    }
+  };
 
   async listarPropuestas() {
     const comando = new ListarPropuestaComando();
     await comando.ejecutar();
-  }
+  };
 
   async actualizarPropuesta() {
     const comando = new ActualizarPropuestaComando();
     await comando.ejecutar();
-  }
+  };
 
   async eliminarPropuesta() {
     const comando = new EliminarPropuestaComando();
     await comando.ejecutar();
-  }
+  };
 }
