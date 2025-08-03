@@ -24,7 +24,7 @@ while (!salir) {
 
     case '3':
         console.clear();
-        console.log('casi 3: actualizar contrato');
+        await contratoService.actualizarContrato(); // caso 3: actualizar contrato
         break;
 
     case '4':
