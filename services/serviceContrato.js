@@ -2,6 +2,7 @@
 
 import { CrearContratoComando } from "../commands/commandsContratos/CrearContratoComando.js";
 import { ListarContratoComando } from "../commands/commandsContratos/ListarContratoComando.js";
+import { EliminarContratoComando } from "../commands/commandsContratos/EliminarContratoComando.js";
 
 export class ContratoService {
   async listarContrato() {
@@ -19,6 +20,7 @@ export class ContratoService {
   }
 
   async eliminarContrato() {
-    console.log('casi (4)'); // caso 4: eliminar contrato
+    const comando = new EliminarContratoComando();
+    await comando.ejecutar(); // caso 4: eliminar contrato
   }
 }

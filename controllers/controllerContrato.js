@@ -3,6 +3,7 @@ import chalk from 'chalk';
 import { ContratoService } from '../services/serviceContrato.js';
 
 
+
 export async function adminContrato() {
 let salir = false;
 const contratoService = new ContratoService();
@@ -28,7 +29,7 @@ while (!salir) {
 
     case '4':
         console.clear();
-        console.log('casi 4: eliminar contrato');
+        await contratoService.eliminarContrato();
         break;
 
     case '0':
