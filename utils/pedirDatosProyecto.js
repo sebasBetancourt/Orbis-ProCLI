@@ -1,27 +1,27 @@
 import inquirer from 'inquirer';
-import chalk from 'chalk';
 
-export async function datosProyecto() {
-    const { descripcion } = await inquirer.prompt([{
-        type: 'input',
-        name: 'descripcion',
-        message: 'Ingresa la descripción del proyecto: ',
-        validate: input => input.trim() ? true : chalk.red.bold('La descripción no puede estar vacía.')
-    }]);
+export async function pedirDatosProyecto() {
+    const preguntas = [
+        {
+            type: 'input',
+            name: 'descripcion',
+            message: 'Ingresa la descripción del proyecto:',
+            validate: (input) => input !== '' || 'La descripción no puede estar vacía.',
+        },
+        {
+            type: 'input',
+            name: 'presupuesto',
+            message: 'Ingresa el presupuesto del proyecto:',
+            validate: (input) => !isNaN(input) || 'El presupuesto debe ser un número.',
+        },
+        {
+            type: 'input',
+            name: 'fechaInicio',
+            message: 'Ingresa la fecha de inicio (YYYY-MM-DD):',
+            validate: (input) => /^\d{4}-\d{2}-\d{2}$/.test(input) || 'Formato de fecha inválido. Usa YYYY-MM-DD.',
+        },
+    ];
 
-    const { valor } = await inquirer.prompt([{
-        type: 'number',
-        name: 'valor',
-        message: 'Ingresa el valor del proyecto: ',
-        validate: input => (typeof input === 'number' && input > 0) ? true : chalk.red.bold('El valor debe ser un número positivo.')
-    }]);
-
-    const { estado } = await inquirer.prompt([{
-        type: 'list',
-        name: 'estado',
-        message: 'Selecciona el estado inicial del proyecto:',
-        choices: ['Activo', 'Pausado', 'Finalizado', 'Cancelado']
-    }]);
-
-    return { descripcion, valor, estado };
+    const respuestas = await inquirer.prompt(preguntas);
+    return respuestas;
 }
