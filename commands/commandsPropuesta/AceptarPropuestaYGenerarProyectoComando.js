@@ -1,5 +1,5 @@
-import { propuestaModel } from '../../../models/Propuestas.js';
-import { proyectoModel } from '../../../models/Proyectos.js';
+import { propuestaModel } from '../../models/Propuestas.js';
+import { proyectoModel } from '../../models/Proyectos.js';
 import inquirer from 'inquirer';
 import chalk from 'chalk';
 

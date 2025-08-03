@@ -3,8 +3,8 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017/';
-const nombreDB = process.env.DB_NAME || 'portafolio-freelancer';
+const uri = 'mongodb+srv://sebas:hola123@sebas.appw5ak.mongodb.net/'; 
+const nombreDB = 'ORBISDB';
 
 const cliente = new MongoClient(uri);
 
