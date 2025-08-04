@@ -4,6 +4,7 @@ import { adminCliente } from './controllers/controllerCliente.js';
 import { adminPropuesta } from './controllers/controllerPropuesta.js';
 import { adminContrato } from './controllers/controllerContrato.js';
 import { adminEntregable } from './controllers/controllerEntregable.js';
+import { adminTransaccion } from './controllers/controllerTransaccion.js';
 
 async function main() {
   let salir = false;
@@ -31,7 +32,7 @@ async function main() {
         await adminEntregable();
         break;
       case '6':
-          console.log("caso 6");
+          await adminTransaccion();
           break;
       case '0':
         salir = true;
