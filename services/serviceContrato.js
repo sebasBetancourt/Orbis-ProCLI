@@ -1,5 +1,3 @@
-// services/serviceContrato.js
-
 import { CrearContratoComando } from "../commands/commandsContratos/CrearContratoComando.js";
 import { ListarContratoComando } from "../commands/commandsContratos/ListarContratoComando.js";
 import { EliminarContratoComando } from "../commands/commandsContratos/EliminarContratoComando.js";
