@@ -1,5 +1,4 @@
 import { mostrarMenuProyectos } from '../helpers/menuProyectos.js';
-import { AceptarPropuestaYGenerarProyectoComando } from '../commands/commandsPropuesta/AceptarPropuestaYGenerarProyectoComando.js';
 import { ListarProyectosComando } from '../commands/commandsProyecto/ListarProyectosComando.js';
 import { ActualizarProyectoComando } from '../commands/commandsProyecto/ActualizarProyectoComando.js';
 import { EliminarProyectoComando } from '../commands/commandsProyecto/EliminarProyectoComando.js';
@@ -16,7 +15,8 @@ export async function controllerProyecto() {
 
             switch (opcion) {
                 case '1':
-                    comando = new AceptarPropuestaYGenerarProyectoComando();
+                    console.log('Error');
+                    
                     break;
                 case '2':
                     comando = new ListarProyectosComando();

@@ -10,9 +10,8 @@ export default async function mostrarMenuPropuesta() {
       choices: [
         { name: chalk.cyan('1. Crear Propuesta'), value: '1' },
         { name: chalk.cyan('2. Ver Propuestas'), value: '2' },
-        { name: chalk.cyan('3. Editar Estado de Propuesta'), value: '3' },
-        { name: chalk.green('4. Aceptar Propuesta y Generar Proyecto'), value: '4' }, // Opción de la transacción
-        { name: chalk.red('5. Eliminar Propuesta'), value: '5' },
+        { name: chalk.cyan('3. Actualizar Estado de Propuesta (Genera Proyecto)'), value: '3' },
+        { name: chalk.cyan('4. Eliminar Propuesta'), value: '4' },
         { name: chalk.red('0. Atras'), value: '0' }
       ]
     }

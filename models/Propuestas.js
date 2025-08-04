@@ -37,24 +37,7 @@ export class Propuesta {
 
 
 
-// Factory Method para crear propuestas y proyectos (OCP)
-export class PropuestaFactory {
-  static crearPropuesta(datos) {
-    return new Propuesta(datos);
-  }
 
-  static async crearProyectoDesdePropuesta(propuesta, proyectoModel) {
-    const proyectoDatos = {
-      clienteId: propuesta.clienteId,
-      nombre: `Proyecto: ${propuesta.descripcion}`,
-      descripcion: propuesta.descripcion,
-      estado: 'activo',
-      fechaInicio: new Date(),
-    };
-    const proyectoCollection = await proyectoModel();
-    return proyectoCollection.insertOne(proyectoDatos);
-  }
-}
 
 export async function propuestaModel() {
   const db = await connection();

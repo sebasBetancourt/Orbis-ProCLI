@@ -2,26 +2,26 @@ import inquirer from 'inquirer';
 import chalk from 'chalk';
 import { propuestaModel } from '../models/Propuestas.js';
 
-export async function seleccionarPropuestaPaginado(PropuestaModel, mensaje = 'Selecciona una Propuesta:') {
+export async function seleccionarPropuestaPaginado(PropuestaModel, mensaje = 'Selecciona una Propuesta:', filtro = {}) {
   const pageSize = 3;
   let page = 0;
   let continuar = true;
 
   while (continuar) {
-    const propuestas = await PropuestaModel.find()
+    const propuestas = await PropuestaModel.find(filtro)
       .skip(page * pageSize)
       .limit(pageSize)
       .toArray();
 
-    const totalPropuestas = await PropuestaModel.countDocuments();
+    const totalPropuestas = await PropuestaModel.countDocuments(filtro);
 
     if (propuestas.length === 0 && page === 0) {
-      console.log(chalk.red.bold("\nNo hay propuestas registradas.❌\n"));
+      console.log(chalk.red.bold("\nNo hay propuestas disponibles para mostrar.❌\n"));
       return null;
     }
 
     const opciones = propuestas.map((propuesta, index) => ({
-      name: `${(page * pageSize) + index + 1}. ${propuesta.descripcion}`,
+      name: `${(page * pageSize) + index + 1}. ${propuesta.descripcion} (Estado: ${propuesta.estado})`,
       value: propuesta,
     }));
 
@@ -33,7 +33,7 @@ export async function seleccionarPropuestaPaginado(PropuestaModel, mensaje = 'Se
     }
 
     opciones.push({ name: chalk.bgWhiteBright.black('Búsqueda inteligente🔍'), value: 'busqueda' });
-    opciones.push({ name: chalk.redBright.bold('0. Atras'), value: 'salir' });
+    opciones.push({ name: chalk.redBright.bold('0. Atrás'), value: 'salir' });
 
     const { propuestaSeleccionada } = await inquirer.prompt([
       {
@@ -58,7 +58,7 @@ export async function seleccionarPropuestaPaginado(PropuestaModel, mensaje = 'Se
         {
           type: 'input',
           name: 'textoBusqueda',
-          message: chalk.cyan('🔍 Ingresa la descripcion o parte de la propuesta a buscar:'),
+          message: chalk.cyan('🔍 Ingresa la descripción o parte de la propuesta a buscar:'),
         },
       ]);
 
@@ -66,16 +66,17 @@ export async function seleccionarPropuestaPaginado(PropuestaModel, mensaje = 'Se
       let searchContinuar = true;
 
       while (searchContinuar) {
-        const resultados = await PropuestaModel.find({
+        const searchFiltro = {
+          ...filtro,
           descripcion: { $regex: textoBusqueda, $options: 'i' },
-        })
+        };
+
+        const resultados = await PropuestaModel.find(searchFiltro)
           .skip(searchPage * pageSize)
           .limit(pageSize)
           .toArray();
 
-        const totalResultados = await propuestaModel.countDocuments({
-          descripcion: { $regex: textoBusqueda, $options: 'i' },
-        });
+        const totalResultados = await PropuestaModel.countDocuments(searchFiltro);
 
         if (resultados.length === 0) {
           console.log(chalk.red('\n❌ No se encontraron coincidencias.\n'));
@@ -84,7 +85,7 @@ export async function seleccionarPropuestaPaginado(PropuestaModel, mensaje = 'Se
         }
 
         const opcionesBusqueda = resultados.map((propuesta, index) => ({
-          name: `${(searchPage * pageSize) + index + 1}. ${propuesta.descripcion}`,
+          name: `${(searchPage * pageSize) + index + 1}. ${propuesta.descripcion} (Estado: ${propuesta.estado})`,
           value: propuesta,
         }));
 
