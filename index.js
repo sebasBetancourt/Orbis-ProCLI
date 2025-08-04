@@ -3,6 +3,7 @@ import mostrarMenu from './helpers/menu.js';
 import { adminCliente } from './controllers/controllerCliente.js';
 import { adminPropuesta } from './controllers/controllerPropuesta.js';
 import { adminProyecto } from './controllers/controllerProyectos.js';
+import { adminContrato } from './controllers/controllerContrato.js'
 
 async function main() {
   let salir = false;
@@ -24,7 +25,7 @@ async function main() {
        await adminProyecto();
        break;
       case '4':
-        console.log("caso 4");
+        await adminContrato();
         break;
       case '5':
         console.log("caso 5");
