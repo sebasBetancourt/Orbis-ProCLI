@@ -146,3 +146,6 @@ El problema de valores por defecto probablemente se debe a prompts no interactiv
 ```
   npm install inquirer chalk mongodb dotenv
   ```
+
+## EVIDENCIA SCRUM
+[Documento de Planificación Scrum (PDF)] https://drive.google.com/file/d/1GLP9gJ9PLsXhbwZkK_Qv6bQaAFf9nc7f/view?usp=sharing

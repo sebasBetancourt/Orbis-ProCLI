@@ -1,4 +1,4 @@
-import { ListarPropuestaComando } from "../commands/commandsPropuesta/ListarPropuestaComando.js";
+import { ListarProyectosComando } from "../commands/commandsProyecto/ListarProyectosComando.js";
 import { ActualizarProyectoComando } from "../commands/commandsProyecto/ActualizarProyectoComando.js";
 import { EliminarProyectoComando } from "../commands/commandsProyecto/EliminarProyectoComando.js";
 import { RegistrarAvanceComando } from "../commands/commandsProyecto/RegistrarAvanceComando.js";
@@ -6,7 +6,7 @@ import { RegistrarAvanceComando } from "../commands/commandsProyecto/RegistrarAv
 export class ProyectoService {
   async listarProyectos() {
     try {
-      const comando = new ListarPropuestaComando();
+      const comando = new ListarProyectosComando();
       await comando.ejecutar();
     } catch (error) {
       console.error(error);

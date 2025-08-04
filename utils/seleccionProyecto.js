@@ -1,63 +1,64 @@
 import inquirer from 'inquirer';
 import chalk from 'chalk';
+import { proyectoModel } from '../models/Proyectos.js';
 
-export async function seleccionarDocumentoPaginado(CollectionModel, mensaje = 'Selecciona un documento:', campoBusqueda = 'nombre') {
+export async function seleccionarProyectoPaginado(ProyectoModel, mensaje = 'Selecciona un Proyecto:', filtro = {}) {
   const pageSize = 3;
   let page = 0;
   let continuar = true;
 
   while (continuar) {
-    const documentos = await CollectionModel.find()
+    const proyectos = await ProyectoModel.find(filtro)
       .skip(page * pageSize)
       .limit(pageSize)
       .toArray();
 
-    const totalDocumentos = await CollectionModel.countDocuments();
+    const totalProyectos = await ProyectoModel.countDocuments(filtro);
 
-    if (documentos.length === 0 && page === 0) {
-      console.log(chalk.red.bold(`\nNo hay documentos registrados.❌\n`));
+    if (proyectos.length === 0 && page === 0) {
+      console.log(chalk.red.bold("\nNo hay proyectos disponibles para mostrar.❌\n"));
       return null;
     }
 
-    const opciones = documentos.map((doc, index) => ({
-      name: `${(page * pageSize) + index + 1}. ${doc[campoBusqueda]}`,
-      value: doc,
+    const opciones = proyectos.map((proyecto, index) => ({
+      name: `${(page * pageSize) + index + 1}. ${proyecto.nombre} (Estado: ${proyecto.estado})`,
+      value: proyecto,
     }));
 
     if (page > 0) {
       opciones.push({ name: chalk.italic.bgCyan.black('<== Página anterior'), value: 'anterior' });
     }
-    if ((page + 1) * pageSize < totalDocumentos) {
+    if ((page + 1) * pageSize < totalProyectos) {
       opciones.push({ name: chalk.italic.bgCyan.black('==> Siguiente página'), value: 'siguiente' });
     }
 
     opciones.push({ name: chalk.bgWhiteBright.black('Búsqueda inteligente🔍'), value: 'busqueda' });
-    opciones.push({ name: chalk.redBright.bold('0. Atras'), value: 'salir' });
+    opciones.push({ name: chalk.redBright.bold('0. Atrás'), value: 'salir' });
 
-    const { documentoSeleccionado } = await inquirer.prompt([
+    const { proyectoSeleccionado } = await inquirer.prompt([
       {
         type: 'list',
-        name: 'documentoSeleccionado',
+        name: 'proyectoSeleccionado',
         message: chalk.yellow(`\n${mensaje}\n`),
         choices: opciones,
       },
     ]);
 
-    if (documentoSeleccionado === 'anterior') {
+    if (proyectoSeleccionado === 'anterior') {
       if (page > 0) page--;
       continue;
     }
-    if (documentoSeleccionado === 'siguiente') {
+    if (proyectoSeleccionado === 'siguiente') {
       page++;
       continue;
     }
 
-    if (documentoSeleccionado === 'busqueda') {
+    if (proyectoSeleccionado === 'busqueda') {
       const { textoBusqueda } = await inquirer.prompt([
         {
           type: 'input',
           name: 'textoBusqueda',
-          message: chalk.cyan(`🔍 Ingresa el nombre o parte del nombre a buscar:`),
+          message: chalk.cyan('🔍 Ingresa el nombre o parte del proyecto a buscar:'),
         },
       ]);
 
@@ -65,16 +66,17 @@ export async function seleccionarDocumentoPaginado(CollectionModel, mensaje = 'S
       let searchContinuar = true;
 
       while (searchContinuar) {
-        const resultados = await CollectionModel.find({
-          [campoBusqueda]: { $regex: textoBusqueda, $options: 'i' },
-        })
+        const searchFiltro = {
+          ...filtro,
+          nombre: { $regex: textoBusqueda, $options: 'i' },
+        };
+
+        const resultados = await ProyectoModel.find(searchFiltro)
           .skip(searchPage * pageSize)
           .limit(pageSize)
           .toArray();
 
-        const totalResultados = await CollectionModel.countDocuments({
-          [campoBusqueda]: { $regex: textoBusqueda, $options: 'i' },
-        });
+        const totalResultados = await ProyectoModel.countDocuments(searchFiltro);
 
         if (resultados.length === 0) {
           console.log(chalk.red('\n❌ No se encontraron coincidencias.\n'));
@@ -82,9 +84,9 @@ export async function seleccionarDocumentoPaginado(CollectionModel, mensaje = 'S
           continue;
         }
 
-        const opcionesBusqueda = resultados.map((doc, index) => ({
-          name: `${(searchPage * pageSize) + index + 1}. ${doc[campoBusqueda]}`,
-          value: doc,
+        const opcionesBusqueda = resultados.map((proyecto, index) => ({
+          name: `${(searchPage * pageSize) + index + 1}. ${proyecto.nombre} (Estado: ${proyecto.estado})`,
+          value: proyecto,
         }));
 
         if (searchPage > 0) {
@@ -102,37 +104,37 @@ export async function seleccionarDocumentoPaginado(CollectionModel, mensaje = 'S
 
         opcionesBusqueda.push({ name: chalk.italic.bgCyan.black('<== Volver'), value: null });
 
-        const { documentoEncontrado } = await inquirer.prompt([
+        const { proyectoEncontrado } = await inquirer.prompt([
           {
             type: 'list',
-            name: 'documentoEncontrado',
+            name: 'proyectoEncontrado',
             message: chalk.yellow('\nResultados encontrados:'),
             choices: opcionesBusqueda,
           },
         ]);
 
-        if (documentoEncontrado === 'anteriorBusqueda') {
+        if (proyectoEncontrado === 'anteriorBusqueda') {
           if (searchPage > 0) searchPage--;
           continue;
         }
-        if (documentoEncontrado === 'siguienteBusqueda') {
+        if (proyectoEncontrado === 'siguienteBusqueda') {
           searchPage++;
           continue;
         }
-        if (!documentoEncontrado) {
+        if (!proyectoEncontrado) {
           searchContinuar = false;
           continue;
         }
 
-        return documentoEncontrado;
+        return proyectoEncontrado;
       }
       continue;
     }
 
-    if (documentoSeleccionado === 'salir') {
+    if (proyectoSeleccionado === 'salir') {
       return null;
     }
 
-    return documentoSeleccionado;
+    return proyectoSeleccionado;
   }
 }
