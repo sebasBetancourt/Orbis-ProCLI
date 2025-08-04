@@ -1,26 +1,38 @@
-import { Proyecto, proyectoModel } from "../models/Proyectos.js";
-import chalk from "chalk";
-import { ObjectId } from 'mongodb';
+import { ListarPropuestaComando } from "../commands/commandsPropuesta/ListarPropuestaComando.js";
+import { ActualizarProyectoComando } from "../commands/commandsProyecto/ActualizarProyectoComando.js";
+import { EliminarProyectoComando } from "../commands/commandsProyecto/EliminarProyectoComando.js";
+import { RegistrarAvanceComando } from "../commands/commandsProyecto/RegistrarAvanceComando.js";
 
 export class ProyectoService {
-    async getCollection() {
-        return await proyectoModel();
+  async listarProyectos() {
+    try {
+      const comando = new ListarPropuestaComando();
+      await comando.ejecutar();
+    } catch (error) {
+      console.error(error);
     }
+  };
 
-    async createProyecto(proyectoData, session = null) {
-        const collection = await this.getCollection();
-        const nuevoProyecto = new Proyecto(
-            proyectoData.clienteId,
-            proyectoData.propuestaId,
-            proyectoData.descripcion,
-            proyectoData.valor,
-            proyectoData.fechaInicio,
-            proyectoData.estado,
-            proyectoData.avances,
-            proyectoData.contratoId
-        );
-        const result = await collection.insertOne(nuevoProyecto, { session });
-        console.log(chalk.green(`\nProyecto "${nuevoProyecto.descripcion}" creado con ID: ${result.insertedId} ✅`));
-        return result.insertedId;
+  async actualizarProyecto() {
+    try {
+      const comando = new ActualizarProyectoComando();
+      await comando.ejecutar();
+    } catch (error) {
+      console.error("Error al Ejecutar Comando Actualizar");
     }
+  };
+
+  async eliminarProyecto() {
+    const comando = new EliminarProyectoComando();
+    await comando.ejecutar();
+  };
+
+  async registrarAvance() {
+    try {
+      const comando = new RegistrarAvanceComando();
+      await comando.ejecutar();
+    } catch (error) {
+      console.error("Error al Ejecutar Comando Registrar Avance");
+    }
+  };
 }
