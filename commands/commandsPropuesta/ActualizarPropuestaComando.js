@@ -1,6 +1,5 @@
 import { Comando } from './Comando.js';
 import { Propuesta, PropuestaFactory, propuestaModel } from '../../models/Propuestas.js';
-import { proyectoModel } from '../../models/Proyectos.js';
 import { MongoClient, ObjectId } from 'mongodb';
 import chalk from 'chalk';
 import inquirer from 'inquirer';

@@ -2,6 +2,8 @@ import chalk from 'chalk';
 import mostrarMenu from './helpers/menu.js';
 import { adminCliente } from './controllers/controllerCliente.js';
 import { adminPropuesta } from './controllers/controllerPropuesta.js';
+import { controllerProyecto } from './controllers/controllerProyectos.js';
+import 'dotenv/config'
 
 async function main() {
   let salir = false;
@@ -20,8 +22,8 @@ async function main() {
         await adminPropuesta();
         break;
       case '3':
-        console.log("caso 3");
-        break;
+       await controllerProyecto();
+       break;
       case '4':
         console.log("caso 4");
         break;

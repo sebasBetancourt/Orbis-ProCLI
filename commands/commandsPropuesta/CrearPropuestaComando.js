@@ -25,8 +25,8 @@ export class CrearPropuestaComando extends Comando{
         },
       ]);
     } catch (error) {
-      throw new Error("Error al Crear Propuesta: "+ error);
-      
-    }
+       console.error(chalk.red("Error al Crear Propuesta:"), error);
+        throw new Error("Error al Crear Propuesta: "+ error.message);
+     }
   }  
 }
