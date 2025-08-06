@@ -2,6 +2,8 @@ import { ListarProyectosComando } from "../commands/commandsProyecto/ListarProye
 import { ActualizarProyectoComando } from "../commands/commandsProyecto/ActualizarProyectoComando.js";
 import { EliminarProyectoComando } from "../commands/commandsProyecto/EliminarProyectoComando.js";
 import { RegistrarAvanceComando } from "../commands/commandsProyecto/RegistrarAvanceComando.js";
+import { clonarProyectoComando } from "../commands/commandsProyecto/clonarProyectoComando.js";
+
 
 export class ProyectoService {
   async listarProyectos() {
@@ -35,4 +37,15 @@ export class ProyectoService {
       console.error("Error al Ejecutar Comando Registrar Avance");
     }
   };
+
+
+  async clonarProyecto() {
+    try {
+      const comando = new clonarProyectoComando();
+      await comando.ejecutar();
+    } catch (error) {
+      console.error("Error al Ejecutar Comando Registrar Avance");
+    }
+  };
+
 }

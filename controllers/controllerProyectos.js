@@ -22,6 +22,9 @@ export async function adminProyecto() {
         case '4':
           await proyectoService.registrarAvance();
           break;
+        case '5':
+          await proyectoService.clonarProyecto();
+          break;
         case '0':
           salir = true;
           console.log(chalk.red.bold('Volviendo al menú principal...'));

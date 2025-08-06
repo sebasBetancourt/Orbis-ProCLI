@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/sebasBetancourt/portafolio-freelance#readme",
   "dependencies": {
+    "22": "^0.0.0",
     "chak": "^0.0.1-security",
     "chalk": "^5.5.0",
     "dayjs": "^1.11.13",
