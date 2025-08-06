@@ -1,63 +1,90 @@
+import { Comando } from './Comando.js';
+import { ProyectoFactory } from '../../models/ProyectoFactory.js';
 import { proyectoModel } from '../../models/Proyectos.js';
-import inquirer from 'inquirer';
+import { contratoModel } from '../../models/Contratos.js';
+import { ObjectId } from 'mongodb';
 import chalk from 'chalk';
+import inquirer from 'inquirer';
 
-export class ActualizarProyectoComando {
-    async ejecutar() {
-        try {
-            const proyectos = await proyectoModel().find({});
-            if (proyectos.length === 0) {
-                console.log(chalk.yellow("No hay proyectos para actualizar."));
-                return;
-            }
+export class ActualizarProyectoComando extends Comando {
+  async ejecutar() {
+    try {
+      const proyectoCollection = await proyectoModel();
+      const proyectos = await proyectoCollection.find().toArray();
 
-            console.log(chalk.bold.blue("--- Proyectos Registrados ---"));
-            proyectos.forEach((proyecto, index) => {
-                console.log(chalk.green(`\n${index + 1}. ID: ${proyecto._id}`));
-                console.log(`   Descripción: ${proyecto.descripcion}`);
-                console.log(`   Presupuesto: ${proyecto.presupuesto}`);
-            });
-            console.log(chalk.bold.blue("\n--------------------------"));
+      if (proyectos.length === 0) {
+        console.log(chalk.red('No hay proyectos registrados. X'));
+        return;
+      }
 
-            const { idProyecto } = await inquirer.prompt({
-                type: 'input',
-                name: 'idProyecto',
-                message: 'Ingresa el ID del proyecto que deseas actualizar:',
-                validate: (input) => input.trim() !== '' || 'El ID no puede estar vacío.'
-            });
+      const opciones = proyectos.map((proyecto, index) => ({
+        name: `${index + 1}. ${proyecto.nombre} (Estado: ${proyecto.estado})`,
+        value: proyecto._id.toString(),
+      }));
 
-            const proyectoAActualizar = await proyectoModel().findOne({ _id: idProyecto });
-            if (!proyectoAActualizar) {
-                console.log(chalk.red("\n❌ No se encontró ningún proyecto con ese ID."));
-                return;
-            }
+      const { proyectoId } = await inquirer.prompt([
+        {
+          type: 'list',
+          name: 'proyectoId',
+          message: chalk.cyan('Selecciona el proyecto a actualizar:'),
+          choices: opciones,
+        },
+      ]);
 
-            const datosNuevos = await inquirer.prompt([
-                {
-                    type: 'input',
-                    name: 'descripcion',
-                    message: `Nueva descripción (actual: ${proyectoAActualizar.descripcion}):`,
-                    default: proyectoAActualizar.descripcion,
-                },
-                {
-                    type: 'input',
-                    name: 'presupuesto',
-                    message: `Nuevo presupuesto (actual: ${proyectoAActualizar.presupuesto}):`,
-                    default: proyectoAActualizar.presupuesto,
-                    validate: (input) => !isNaN(input) || 'El presupuesto debe ser un número.',
-                },
-            ]);
+      const { estado } = await inquirer.prompt([
+        {
+          type: 'list',
+          name: 'estado',
+          message: chalk.cyan('Selecciona el nuevo estado:'),
+          choices: ['pausado', 'activo', 'finalizado', 'cancelado'],
+        },
+      ]);
 
-            await proyectoModel().updateOne(
-                { _id: idProyecto },
-                { $set: datosNuevos }
+      const session = (await proyectoModel()).client.startSession();
+      try {
+        await session.withTransaction(async () => {
+          const proyectoCollection = await proyectoModel();
+          const resultado = await proyectoCollection.updateOne(
+            { _id: new ObjectId(proyectoId) },
+            { $set: { estado } },
+            { session }
+          );
+
+          if (resultado.matchedCount === 0) {
+            throw new Error('Proyecto no encontrada');
+          }
+
+          if (estado === 'activo') {
+            const proyecto = await proyectoCollection.findOne(
+              { _id: new ObjectId(proyectoId) },
+              { session }
+            );
+            const contrato = await ProyectoFactory.crearContratoDesdeProyecto(proyecto, contratoModel);
+            // Contrato Embebido
+            await proyectoCollection.updateOne(
+              { _id: new ObjectId(proyectoId) },
+              { $set: { contrato } },
+              { session }
             );
 
-            console.log(chalk.green("\n✅ Proyecto actualizado exitosamente."));
+          }
+        });
 
-        } catch (error) {
-            console.error(chalk.red("Error al actualizar el proyecto:"), error);
-            throw new Error("Error en el comando para actualizar proyectos.");
-        }
+        console.log(chalk.green('Proyecto actualizado exitosamente ✅'));
+        console.log(chalk.green('Contrato generado Automaticamente.........✅'));
+      } finally {
+        await session.endSession();
+      }
+
+      await inquirer.prompt([
+        {
+          type: 'input',
+          name: 'continuar',
+          message: chalk.blueBright('Presiona Enter para continuar...'),
+        },
+      ]);
+    } catch (error) {
+      console.error(chalk.red(`Error al actualizar el contrato: ${error.message}`));
     }
+  }
 }

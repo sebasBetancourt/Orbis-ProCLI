@@ -46,5 +46,5 @@ export async function pedirDatosPropuesta(clienteModel) {
     },
   ]);
 
-  return { clienteId, descripcion, precio: parseFloat(precio), plazo: parseInt(plazo), clienteNombre,};
+  return { clienteId, descripcion, precio: parseFloat(precio), plazo: parseInt(plazo), clienteNombre};
 }

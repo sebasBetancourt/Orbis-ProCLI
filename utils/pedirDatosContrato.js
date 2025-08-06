@@ -1,74 +1,89 @@
-import inquirer from 'inquirer';
+import { input } from '@inquirer/prompts';
 import chalk from 'chalk';
+import dayjs from 'dayjs';
+import { proyectoModel } from '../models/Proyectos.js';
+import { propuestaModel } from '../models/Propuestas.js';
 
-export async function datosContrato() {
-  // Pedir proyectoId (string que luego en modelo se convierte a ObjectId)
-const { proyectoId } = await inquirer.prompt({
-    type: 'input',
-    name: 'proyectoId',
-    message: 'Ingresa el ID del proyecto (ObjectId):',
-    validate: input => {
-    if (!input.trim()) return chalk.red('El proyectoId es obligatorio');
-    if (!/^[a-fA-F0-9]{24}$/.test(input.trim()))
-        return chalk.red('El proyectoId debe ser un ObjectId válido (24 caracteres hexadecimales)');
-    return true;
-    }
-});
+export async function datosContrato(proyectoId) {
+  const hoy = dayjs('2025-08-05');
 
-  // Pedir condiciones (string obligatorio no vacío)
-const { condiciones } = await inquirer.prompt({
-    type: 'input',
-    name: 'condiciones',
-    message: 'Ingresa las condiciones del contrato:',
-    validate: input => {
-    if (!input.trim()) return chalk.red('Las condiciones no pueden estar vacías');
-    return true;
+  const fechaInicio = await input({
+    message: 'Ingresa la fecha de inicio (formato YYYY-MM-DD, a partir de 2025-08-05)📆:',
+    validate: (input) => {
+      const fecha = dayjs(input.trim(), 'YYYY-MM-DD', true);
+      if (!fecha.isValid()) {
+        return 'Debes ingresar una fecha válida en formato YYYY-MM-DD';
+      }
+      const year = fecha.year();
+      const month = fecha.month() + 1;
+      const day = fecha.date();
+      if (year < 2025 || fecha.isBefore(hoy, 'day')) {
+        return 'La fecha de inicio debe ser el 5 de agosto de 2025 o posterior';
+      }
+      if (month < 1 || month > 12) {
+        return 'El mes debe estar entre 01 y 12';
+      }
+      if (day < 1 || day > fecha.daysInMonth()) {
+        return `El día debe estar entre 01 y ${fecha.daysInMonth()} para el mes ${month}`;
+      }
+      return true;
     }
-});
+  });
 
-  // Pedir fechaInicio (opcional), si vacío se usará la fecha actual en el modelo
-const { fechaInicio } = await inquirer.prompt({
-    type: 'input',
-    name: 'fechaInicio',
-    message: 'Ingresa la fecha de inicio (YYYY-MM-DD) o deja vacío para hoy:',
-    validate: input => {
-      if (!input.trim()) return true; // vacío válido
-      // Validar formato básico
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(input.trim()))
-        return chalk.red('Fecha inválida, debe ser formato YYYY-MM-DD');
-    return true;
+  const fechaFin = await input({
+    message: 'Ingresa la fecha de finalización (formato YYYY-MM-DD, posterior a fecha de inicio)📆:',
+    validate: (input) => {
+      const fechaFinD = dayjs(input.trim(), 'YYYY-MM-DD', true);
+      if (!fechaFinD.isValid()) {
+        return 'Debes ingresar una fecha válida en formato YYYY-MM-DD';
+      }
+      const year = fechaFinD.year();
+      const month = fechaFinD.month() + 1;
+      const day = fechaFinD.date();
+      if (year < 2025 || fechaFinD.isBefore(hoy, 'day')) {
+        return 'La fecha de finalización debe ser el 5 de agosto de 2025 o posterior';
+      }
+      if (month < 1 || month > 12) {
+        return 'El mes debe estar entre 01 y 12';
+      }
+      if (day < 1 || day > fechaFinD.daysInMonth()) {
+        return `El día debe estar entre 01 y ${fechaFinD.daysInMonth()} para el mes ${month}`;
+      }
+      const fechaInicioD = dayjs(fechaInicio, 'YYYY-MM-DD', true);
+      if (fechaFinD.isBefore(fechaInicioD, 'day') || fechaFinD.isSame(fechaInicioD, 'day')) {
+        return 'La fecha de finalización debe ser posterior a la fecha de inicio';
+      }
+      return true;
     }
-});
-  // Pedir fechaFin (opcional)
-const { fechaFin } = await inquirer.prompt({
-    type: 'input',
-    name: 'fechaFin',
-    message: 'Ingresa la fecha de fin (YYYY-MM-DD) o deja vacío:',
-    validate: input => {
-    if (!input.trim()) return true;
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(input.trim()))
-        return chalk.red('Fecha inválida, debe ser formato YYYY-MM-DD');
-    return true;
-    }
-});
+  });
 
-  // Pedir valorTotal (obligatorio, número mayor que cero)
-const { valorTotal } = await inquirer.prompt({
-    type: 'input',
-    name: 'valorTotal',
-    message: 'Ingresa el valor total del contrato:',
-    validate: input => {
-    const valor = Number(input);
-    if (isNaN(valor) || valor <= 0) return chalk.red('Debe ingresar un número mayor que 0');
-    return true;
-    }
-});
+  const condiciones = await input({
+    message: 'Ingresa las condiciones del proyecto:',
+    validate: (input) => input.trim() !== '' || 'El campo "condiciones" no puede estar vacío.'
+  });
 
-return {
-    proyectoId: proyectoId.trim(),
-    condiciones: condiciones.trim(),
-    fechaInicio: fechaInicio.trim() || null,
-    fechaFin: fechaFin.trim() || null,
-    valorTotal: Number(valorTotal)
-};
+  const fechaInicioDate = dayjs(fechaInicio).toDate();
+  const fechaFinDate = dayjs(fechaFin).toDate();
+
+  const proyectoCollection = await proyectoModel();
+  const propuestaCollection = await propuestaModel();
+
+  const proyecto = await proyectoCollection.findOne({ _id: proyectoId });
+  if (!proyecto) {
+    throw new Error('Proyecto no encontrado');
+  }
+  const idpropuesta = proyecto.propuestaId;
+
+  const propuesta = await propuestaCollection.findOne({ _id: idpropuesta }, { projection: { precio: 1 } });
+  if (!propuesta) {
+    throw new Error('Propuesta no encontrada');
+  }
+  const valorTotal = propuesta.precio;
+
+  return {
+    fechaInicio: fechaInicioDate,
+    fechaFin: fechaFinDate,
+    condiciones,
+    valorTotal
+  };
 }

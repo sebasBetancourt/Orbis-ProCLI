@@ -1,17 +1,15 @@
 import { connection } from '../config/db.js';
-import { ObjectId } from 'mongodb';
 
 export class Contrato {
-  constructor({ id, proyectoId, condiciones, fechaInicio, fechaFin, valorTotal }) {
+  constructor({ fechaInicio, fechaFin, valorTotal, condiciones }) {
     if (!proyectoId || !condiciones || !valorTotal) {
       throw new Error('Todos los campos son obligatorios.');
     }
-    this._id = id ? new ObjectId(id) : null;
-    this.proyectoId = new ObjectId(proyectoId);
-    this.condiciones = condiciones;
-    this.fechaInicio = fechaInicio || new Date();
+    
+    this.fechaInicio = fechaInicio;
     this.fechaFin = fechaFin;
     this.valorTotal = valorTotal;
+    this.condiciones = condiciones;
 
     this.validar();
   }
