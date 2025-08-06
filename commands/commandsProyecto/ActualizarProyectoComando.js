@@ -8,6 +8,7 @@ import inquirer from 'inquirer';
 
 export class ActualizarProyectoComando extends Comando {
   async ejecutar() {
+    
     try {
       const proyectoCollection = await proyectoModel();
       const proyectos = await proyectoCollection.find().toArray();

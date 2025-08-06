@@ -3,7 +3,7 @@ import mostrarMenu from './helpers/menu.js';
 import { adminCliente } from './controllers/controllerCliente.js';
 import { adminPropuesta } from './controllers/controllerPropuesta.js';
 import { adminProyecto } from './controllers/controllerProyectos.js';
-import { GestionFinanciera } from './commands/commandsFinanzas/GestionFInancieraComando.js';
+import { adminFinanza } from './controllers/controllerFinanza.js';
 
 async function main() {
   let salir = false;
@@ -12,25 +12,20 @@ async function main() {
     const opcion = await mostrarMenu();
 
     switch (opcion) {
-
-
       case '1':
         await adminCliente();
         break;
-
       case '2':
         await adminPropuesta();
         break;
       case '3':
-       await adminProyecto();
-       break;
+        await adminProyecto();
+        break;
       case '4':
-          const gestion = new GestionFinanciera();
-          await gestion.ejecutar();
-          break;
+        await adminFinanza();
       case '0':
         salir = true;
-        console.log(chalk.bold.red(' Cerrado exitosamente...'));
+        console.log(chalk.bold.red('Cerrado exitosamente...'));
         break;
     }
   }
