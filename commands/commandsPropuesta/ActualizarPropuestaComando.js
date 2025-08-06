@@ -64,7 +64,7 @@ export class ActualizarPropuestaComando extends Comando {
         });
 
         console.log(chalk.green('Propuesta actualizada exitosamente ✅'));
-        console.log(chalk.green('Proyecto generado Automaticamente.........✅'));
+        console.log(chalk.green('Propuesta aceptada sin proyecto.........✅'));
       } finally {
         await session.endSession();
       }
