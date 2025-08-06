@@ -44,7 +44,7 @@ export class ProyectoService {
       const comando = new clonarProyectoComando();
       await comando.ejecutar();
     } catch (error) {
-      console.error("Error al Ejecutar Comando Registrar Avance");
+      console.error("Error al Ejecutar Comando clonar");
     }
   };
 

@@ -81,7 +81,7 @@ export class clonarProyectoComando extends Comando{
                 balance: proyecto.balance
             }
             
-            await proyectoCollection.insertOne(nuevoProyecto)
+            await proyectoCollection.insertOne(nuevoProyecto, { session})
               // Actualizar balance del proyecto
             console.log("Hecho");
             await session.endSession();   
