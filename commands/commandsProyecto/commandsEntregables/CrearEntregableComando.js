@@ -4,6 +4,7 @@ import chalk from 'chalk';
 import dayjs from 'dayjs';
 import { proyectoModel } from '../../../models/Proyectos.js';
 import { Entregable, entregableModel } from '../../../models/Entregables.js';
+import { ObjectId } from 'mongodb';
 
 export class CrearEntregable extends Comando {
   // Función auxiliar para manejar pausas
@@ -249,9 +250,11 @@ export class CrearEntregable extends Comando {
 
       // Crear y validar el entregable
       const entregableData = {
+        _id: new ObjectId(),
         titulo,
         fechaLimite: new Date(fechaLimite),
         estado: 'pendiente',
+        proyectoId: proyecto._id,
       };
 
       const entregable = new Entregable(entregableData);
@@ -264,7 +267,7 @@ export class CrearEntregable extends Comando {
           if (!Array.isArray(proyecto.entregables)) {
             await proyectoCollection.updateOne(
               { _id: proyecto._id },
-              { $set: { entregables: [], updatedAt: new Date() } },
+              { $set: { entregables: [] } },
               { session }
             );
           }
@@ -273,8 +276,14 @@ export class CrearEntregable extends Comando {
           const resultProyecto = await proyectoCollection.updateOne(
             { _id: proyecto._id },
             {
-              $push: { entregables: entregable },
-              $set: { updatedAt: new Date() },
+              $push: {
+                entregables: {
+                  _id: entregable._id,
+                  titulo: entregable.titulo,
+                  fechaLimite: entregable.fechaLimite,
+                  estado: entregable.estado,
+                },
+              }
             },
             { session }
           );
@@ -286,10 +295,10 @@ export class CrearEntregable extends Comando {
           // Insertar el entregable en la colección entregables
           const resultEntregable = await entregableCollection.insertOne(
             {
+              _id: entregable._id,
               titulo: entregable.titulo,
               fechaLimite: entregable.fechaLimite,
-              estado: entregable.estado,
-              createdAt: new Date(),
+              estado: entregable.estado
             },
             { session }
           );

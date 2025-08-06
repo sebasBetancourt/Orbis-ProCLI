@@ -1,11 +1,12 @@
 import { connection } from '../config/db.js';
-
+import { ObjectId } from 'mongodb';
 export class Entregable {
-constructor({ titulo, fechaLimite, estado = 'pendiente' }) {
+constructor({ _id, titulo, fechaLimite, estado = 'pendiente' }) {
     if (!titulo || !fechaLimite) {
         throw new Error('Todos los campos obligatorios deben estar presentes.');
     }
 
+    this._id = _id || new ObjectId();
     this.titulo = titulo;
     this.fechaLimite = new Date(fechaLimite);
     this.estado = estado;
