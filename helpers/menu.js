@@ -15,6 +15,7 @@ export default async function mostrarMenu() {
         { name: chalk.yellow.italic('4. Administar Contratos'), value: '4' },
         { name: chalk.yellow.italic('5. Administar Entregables'), value: '5' },
         { name: chalk.yellow.italic('6. Administar Gestion Financiera'), value: '6' },
+        { name: chalk.yellow.italic('7. Estado Financiero'), value: '7' },
         { name: chalk.red.italic('0. Salir'), value: '0' }
       ]
     }

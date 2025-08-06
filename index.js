@@ -4,6 +4,7 @@ import { adminCliente } from './controllers/controllerCliente.js';
 import { adminPropuesta } from './controllers/controllerPropuesta.js';
 import { adminProyecto } from './controllers/controllerProyectos.js';
 import { adminContrato } from './controllers/controllerContrato.js'
+import {adminEstado} from './controllers/controllerEstadofinanciero.js'
 
 async function main() {
   let salir = false;
@@ -33,6 +34,9 @@ async function main() {
       case '6':
           console.log("caso 6");
           break;
+      case '7':
+        await adminEstado();
+        break;
       case '0':
         salir = true;
         console.log(chalk.bold.red(' Cerrado exitosamente...'));
