@@ -1,10 +1,11 @@
 import { proyectoModel } from '../../models/Proyectos.js';
 import { clienteModel } from '../../models/Cliente.js';
 import { seleccionarProyectoPaginado } from '../../utils/seleccionProyecto.js';
+import { Comando } from '../commandsPropuesta/Comando.js';
 import chalk from 'chalk';
 import inquirer from 'inquirer';
 
-export class ListarProyectosComando {
+export class ListarProyectosComando extends Comando{
   async ejecutar() {
     try {
       const ProyectoModel = await proyectoModel();

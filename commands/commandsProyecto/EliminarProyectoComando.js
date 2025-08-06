@@ -1,8 +1,9 @@
 import { proyectoModel } from '../../models/Proyectos.js';
+import { Comando } from '../commandsPropuesta/Comando.js';
 import inquirer from 'inquirer';
 import chalk from 'chalk';
 
-export class EliminarProyectoComando {
+export class EliminarProyectoComando extends Comando{
     async ejecutar() {
         try {
             const proyectos = await proyectoModel().find({});
