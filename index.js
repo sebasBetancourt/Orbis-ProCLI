@@ -3,6 +3,7 @@ import mostrarMenu from './helpers/menu.js';
 import { adminCliente } from './controllers/controllerCliente.js';
 import { adminPropuesta } from './controllers/controllerPropuesta.js';
 import { adminProyecto } from './controllers/controllerProyectos.js';
+import { GestionFinanciera } from './commands/commandsFinanzas/GestionFInancieraComando.js';
 
 async function main() {
   let salir = false;
@@ -24,7 +25,8 @@ async function main() {
        await adminProyecto();
        break;
       case '4':
-          console.log("caso 6");
+          const gestion = new GestionFinanciera();
+          await gestion.ejecutar();
           break;
       case '0':
         salir = true;
